@@ -15,10 +15,18 @@
 
 	$effect(() => {
 		inputName?.addEventListener('keydown', chooseName);
+		inputName?.focus();
 	});
 </script>
 
-<input bind:this={inputName} class="input" type="text" placeholder="Your name..." />
+<input
+	bind:this={inputName}
+	class="input"
+	type="text"
+	placeholder="Your name..."
+	autocomplete="off"
+	data-1p-ignore
+/>
 
 <style>
 	.input {

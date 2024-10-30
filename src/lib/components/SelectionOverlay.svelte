@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { selection, steps } from '../stores.js';
+	import { name, selection, steps } from '../stores.js';
 
 	let zone: HTMLDivElement | undefined = $state();
 	let selecting = $state(false);
@@ -37,18 +36,21 @@
 		steps.set('title');
 	}
 
-	onMount(() => {
-		zone?.addEventListener('mousedown', onMouseDown);
-		zone?.addEventListener('mousemove', onMouseMove);
-		zone?.addEventListener('mouseup', onMouseUp);
+	$effect(() => {
+		if ($name !== '') {
+			zone?.addEventListener('mousedown', onMouseDown);
+			zone?.addEventListener('mousemove', onMouseMove);
+			zone?.addEventListener('mouseup', onMouseUp);
+		}
 	});
 </script>
 
-<div class="backdrop-zone" bind:this={zone}></div>
+<div class="backdrop-zone" bind:this={zone} data-ignore-screenshot></div>
 <div
 	class="selectionRect"
 	class:selected={$selection.width > 0 && $selection.height > 0}
 	style="top: {$selection.y}px; left: {$selection.x}px; width: {$selection.width}px; height: {$selection.height}px;"
+	data-ignore-screenshot
 ></div>
 
 <style>

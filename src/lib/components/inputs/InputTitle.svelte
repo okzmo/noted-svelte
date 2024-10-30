@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { steps, title } from '../../stores.js';
 
-	let inputTitle: HTMLInputElement | undefined = $state();
+	let { inputTitle = $bindable() }: { inputTitle: HTMLInputElement | undefined } = $props();
 
 	function chooseTitle(e: KeyboardEvent) {
 		if (!inputTitle) return;
@@ -23,9 +23,9 @@
 	.input {
 		position: absolute;
 		left: 0;
-		top: 0;
+		bottom: 0;
 		width: 100%;
-		height: 100%;
+		height: 48px;
 		padding-block: 0;
 		margin-block: 0;
 		border: none;

@@ -1,13 +1,58 @@
 <script lang="ts">
-	import { steps } from '../../stores.js';
+	import { createMutation } from '@tanstack/svelte-query';
+	import { steps, selection, title, name, show, config, creationError } from '../../stores.js';
+	import { CreateACard } from '../../services/create-card.js';
+	import { captureScreenshot } from '../../utils/capture-screenshot.js';
 
-	let inputMessage: HTMLTextAreaElement | undefined = $state();
+	let { inputMessage = $bindable() }: { inputMessage: HTMLTextAreaElement | undefined } = $props();
+
+	const createCard = createMutation({
+		mutationKey: ['create-card'],
+		mutationFn: async () => {
+			const selectionCoords = {
+				x: $selection.x,
+				y: $selection.y,
+				width: $selection.width,
+				height: $selection.height
+			};
+			const { dataUrl, dpr } = await captureScreenshot();
+			steps.set('creating');
+
+			const res = await CreateACard({
+				config: $config,
+				card_title: $title,
+				card_description: inputMessage!.value,
+				selectionCoords,
+				dataUrl: dataUrl,
+				dpr: dpr,
+				name: $name
+			});
+			return res;
+		},
+		onError: (error) => {
+			console.log(error);
+			creationError.set(true);
+			setTimeout(() => {
+				creationError.set(false);
+				steps.set('zone');
+				selection.set({ xStart: 0, yStart: 0, x: 0, y: 0, width: 0, height: 0 });
+			}, 1800);
+		},
+		onSuccess: () => {
+			console.log('success');
+			show.set(false);
+			selection.set({ xStart: 0, yStart: 0, x: 0, y: 0, width: 0, height: 0 });
+			steps.set('zone');
+		}
+	});
 
 	function send(e: KeyboardEvent) {
 		if (!inputMessage) return;
+		if (!inputMessage.value) return;
 
 		if (e.key === 'Enter' && !e.shiftKey) {
-			steps.set('creating');
+			e.preventDefault();
+			$createCard.mutate();
 		}
 	}
 
