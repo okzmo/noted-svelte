@@ -177,6 +177,9 @@
 	.inbox-button {
 		z-index: 10;
 		position: fixed;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		padding: 0;
 		height: 48px;
 		width: 48px;

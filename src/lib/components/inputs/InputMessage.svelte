@@ -2,7 +2,6 @@
 	import { createMutation, getQueryClientContext } from '@tanstack/svelte-query';
 	import { steps, selection, title, name, show, config, creationError } from '../../stores.js';
 	import { CreateACard } from '../../services/create-card.js';
-	import { captureScreenshot } from '../../utils/capture-screenshot.js';
 
 	let { inputMessage = $bindable() }: { inputMessage: HTMLTextAreaElement | undefined } = $props();
 
@@ -16,17 +15,13 @@
 				width: $selection.width,
 				height: $selection.height
 			};
-			const { dataUrl, dpr } = await captureScreenshot();
 			steps.set('creating');
 
-			console.log(selectionCoords, dpr);
 			const res = await CreateACard({
 				config: $config,
 				card_title: $title,
 				card_description: inputMessage!.value,
 				selectionCoords,
-				dataUrl: dataUrl,
-				dpr: dpr,
 				name: $name
 			});
 			return res;

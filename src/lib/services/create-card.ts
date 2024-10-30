@@ -5,8 +5,6 @@ interface CreateCardProps {
 	};
 	card_title: string;
 	card_description: string;
-	dataUrl: string;
-	dpr: number;
 	selectionCoords: {
 		x: number;
 		y: number;
@@ -20,20 +18,18 @@ export const CreateACard = async ({
 	config,
 	card_title,
 	card_description,
-	dataUrl,
-	dpr,
 	selectionCoords,
 	name
 }: CreateCardProps) => {
 	const formData = new FormData();
-	formData.append('image', dataUrl);
-	formData.append('dpr', dpr.toString());
-	formData.append('card_title', card_title);
-	formData.append('card_description', card_description);
-	formData.append('selectionCoords', JSON.stringify(selectionCoords));
 	formData.append('boardId', config.boardId);
 	formData.append('name', name);
+	formData.append('card_title', card_title);
+	formData.append('card_description', card_description);
 	formData.append('location', location.href);
+	formData.append('selectionCoords', JSON.stringify(selectionCoords));
+	formData.append('viewportHeight', window.innerHeight.toString());
+	formData.append('viewportWidth', window.innerWidth.toString());
 
 	const res = await fetch('http://localhost:8000/create-card', {
 		method: 'POST',

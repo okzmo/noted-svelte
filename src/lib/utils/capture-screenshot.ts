@@ -1,34 +1,31 @@
-import { toPng } from 'html-to-image';
-
 export const captureScreenshot = async () => {
-	const dpr = window.devicePixelRatio || 1;
-	const scale = dpr * 1.5;
-
-	const filter = (node: HTMLElement) => {
-		if (node.hasAttribute) {
-			return !node.hasAttribute('data-ignore-screenshot');
-		}
-		return true;
-	};
-
-	const dataUrl = await toPng(document.body, {
-		quality: 0.9,
-		pixelRatio: scale,
-		width: window.innerWidth,
-		height: window.innerHeight,
-		backgroundColor: getBackgroundColor(),
-		filter: filter,
-		style: {
-			transform: `translateY(-${window.scrollY}px)`,
-			width: `${document.body.scrollWidth}px`,
-			height: `${document.body.scrollHeight}px`
+	const stream = await navigator.mediaDevices.getDisplayMedia({
+		video: {
+			displaySurface: 'browser',
+			width: window.innerWidth,
+			height: window.innerHeight
 		}
 	});
 
-	return {
-		dataUrl: dataUrl,
-		dpr: dpr
-	};
+	const video = document.createElement('video');
+	video.srcObject = stream;
+	await video.play();
+
+	const canvas = document.createElement('canvas');
+	canvas.width = video.videoWidth;
+	canvas.height = video.videoHeight;
+
+	const ctx = canvas.getContext('2d')!;
+	ctx.drawImage(video, 0, 0);
+
+	stream.getTracks().forEach((track) => track.stop());
+
+	const dataUrl = canvas.toDataURL('image/png');
+	const image = new Image();
+	image.src = dataUrl;
+	document.body.appendChild(image);
+
+	return dataUrl;
 };
 
 function getBackgroundColor(): string {
