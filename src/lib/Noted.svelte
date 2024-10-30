@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { config } from './stores.js';
 	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
-	import { browser } from '$app/environment';
+	import { BROWSER } from 'esm-env';
 	import Main from './components/Main.svelte';
 
 	let { apiKey, boardId }: { apiKey: string; boardId: string } = $props();
@@ -17,7 +17,7 @@
 	const queryClient = new QueryClient({
 		defaultOptions: {
 			queries: {
-				enabled: browser
+				enabled: BROWSER
 			}
 		}
 	});
