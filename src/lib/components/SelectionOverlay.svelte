@@ -47,6 +47,7 @@
 
 <div class="backdrop-zone" bind:this={zone} data-ignore-screenshot></div>
 <div
+	id="selectionRect"
 	class="selectionRect"
 	class:selected={$selection.width > 0 && $selection.height > 0}
 	style="top: {$selection.y}px; left: {$selection.x}px; width: {$selection.width}px; height: {$selection.height}px;"

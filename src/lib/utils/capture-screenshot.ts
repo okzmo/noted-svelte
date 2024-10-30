@@ -2,6 +2,7 @@ import { toPng } from 'html-to-image';
 
 export const captureScreenshot = async () => {
 	const dpr = window.devicePixelRatio || 1;
+	const scale = dpr * 1.5;
 
 	const filter = (node: HTMLElement) => {
 		if (node.hasAttribute) {
@@ -12,7 +13,7 @@ export const captureScreenshot = async () => {
 
 	const dataUrl = await toPng(document.body, {
 		quality: 0.9,
-		pixelRatio: dpr * 1.5,
+		pixelRatio: scale,
 		width: window.innerWidth,
 		height: window.innerHeight,
 		backgroundColor: getBackgroundColor(),

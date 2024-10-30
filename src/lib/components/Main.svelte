@@ -51,12 +51,12 @@
 </script>
 
 {#if $show}
-	<div transition:fade={{ duration: 150 }} style="z-index: 9999; position: relative">
+	<div transition:fade={{ duration: 150 }} style="z-index: 9999; position: fixed">
 		{#if $inboxOpen}
 			<Inbox cards={$allCards.data} loading={$allCards.isLoading} />
 		{/if}
 	</div>
-	<div transition:fade={{ duration: 200 }}>
+	<div transition:fade={{ duration: 200 }} style="z-index: 9998; position: fixed">
 		<SelectionOverlay />
 	</div>
 	<Wrapper />

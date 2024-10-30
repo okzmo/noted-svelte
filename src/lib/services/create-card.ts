@@ -33,10 +33,7 @@ export const CreateACard = async ({
 	formData.append('selectionCoords', JSON.stringify(selectionCoords));
 	formData.append('boardId', config.boardId);
 	formData.append('name', name);
-	formData.append(
-		'location',
-		location.href + `?top=${selectionCoords.y - window.innerHeight / 2 + window.scrollY}`
-	);
+	formData.append('location', location.href);
 
 	const res = await fetch('http://localhost:8000/create-card', {
 		method: 'POST',

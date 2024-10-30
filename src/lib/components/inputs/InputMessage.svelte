@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { createMutation } from '@tanstack/svelte-query';
+	import { createMutation, getQueryClientContext } from '@tanstack/svelte-query';
 	import { steps, selection, title, name, show, config, creationError } from '../../stores.js';
 	import { CreateACard } from '../../services/create-card.js';
 	import { captureScreenshot } from '../../utils/capture-screenshot.js';
 
 	let { inputMessage = $bindable() }: { inputMessage: HTMLTextAreaElement | undefined } = $props();
 
+	const client = getQueryClientContext();
 	const createCard = createMutation({
 		mutationKey: ['create-card'],
 		mutationFn: async () => {
@@ -18,6 +19,7 @@
 			const { dataUrl, dpr } = await captureScreenshot();
 			steps.set('creating');
 
+			console.log(selectionCoords, dpr);
 			const res = await CreateACard({
 				config: $config,
 				card_title: $title,
@@ -43,6 +45,7 @@
 			show.set(false);
 			selection.set({ xStart: 0, yStart: 0, x: 0, y: 0, width: 0, height: 0 });
 			steps.set('zone');
+			client.invalidateQueries({ queryKey: ['notion-cards'] });
 		}
 	});
 
