@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { createMutation, getQueryClientContext } from '@tanstack/svelte-query';
-	import { steps, selection, title, name, show, config, creationError } from '../../stores.js';
+	import { steps, title, name, show, config, creationError } from '../../stores.js';
 	import { CreateACard } from '../../services/create-card.js';
-	import { captureScreenshot } from '$lib/utils/capture-screenshot.js';
 
 	let { inputMessage = $bindable() }: { inputMessage: HTMLTextAreaElement | undefined } = $props();
 
@@ -10,19 +9,12 @@
 	const createCard = createMutation({
 		mutationKey: ['create-card'],
 		mutationFn: async () => {
-			const selectionCoords = {
-				x: $selection.x,
-				y: $selection.y,
-				width: $selection.width,
-				height: $selection.height
-			};
 			steps.set('creating');
 
 			const res = await CreateACard({
 				config: $config,
 				card_title: $title,
 				card_description: inputMessage!.value,
-				selectionCoords,
 				name: $name
 			});
 			return res;
@@ -33,13 +25,11 @@
 			setTimeout(() => {
 				creationError.set(false);
 				steps.set('zone');
-				selection.set({ xStart: 0, yStart: 0, x: 0, y: 0, width: 0, height: 0 });
 			}, 1800);
 		},
 		onSuccess: () => {
 			console.log('success');
 			show.set(false);
-			selection.set({ xStart: 0, yStart: 0, x: 0, y: 0, width: 0, height: 0 });
 			steps.set('zone');
 			client.invalidateQueries({ queryKey: ['notion-cards'] });
 		}
@@ -51,8 +41,7 @@
 
 		if (e.key === 'Enter' && !e.shiftKey) {
 			e.preventDefault();
-			// $createCard.mutate();
-			captureScreenshot();
+			$createCard.mutate();
 		}
 	}
 

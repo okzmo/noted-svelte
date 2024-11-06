@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { show, selection, name, steps, inboxOpen, config } from '../stores.js';
-	import SelectionOverlay from './SelectionOverlay.svelte';
+	import { show, name, steps, inboxOpen, config } from '../stores.js';
 	import Wrapper from './Wrapper.svelte';
 	import Inbox from './Inbox.svelte';
 	import { onMount } from 'svelte';
@@ -13,12 +12,7 @@
 		if (!['Alt', 'Escape'].includes(e.key)) return;
 
 		if (e.key === 'Escape') {
-			if ($selection.width > 0 && $selection.height > 0) {
-				selection.set({ xStart: 0, yStart: 0, x: 0, y: 0, width: 0, height: 0 });
-				steps.set('zone');
-			} else {
-				show.set(false);
-			}
+			show.set(false);
 			return;
 		}
 
@@ -55,9 +49,6 @@
 		{#if $inboxOpen}
 			<Inbox cards={$allCards.data} loading={$allCards.isLoading} />
 		{/if}
-	</div>
-	<div transition:fade={{ duration: 200 }} style="z-index: 9998; position: fixed">
-		<SelectionOverlay />
 	</div>
 	<Wrapper />
 {/if}
