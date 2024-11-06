@@ -9,7 +9,7 @@
 		if (e.key === 'Enter') {
 			localStorage.setItem('ntd-name', inputName.value);
 			name.set(inputName.value);
-			steps.set('zone');
+			steps.set('pin');
 		}
 	}
 
