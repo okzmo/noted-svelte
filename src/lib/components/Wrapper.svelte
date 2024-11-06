@@ -84,9 +84,9 @@
 		<div in:receive={{ key: 'name' }} out:send={{ key: 'name' }}>
 			<InputName />
 		</div>
-	{:else if $steps === 'zone'}
-		<div in:receive={{ key: 'zone' }} out:send={{ key: 'zone' }}>
-			<p class="standalone-message">Select a zone</p>
+	{:else if $steps === 'pin'}
+		<div in:receive={{ key: 'pin' }} out:send={{ key: 'pin' }}>
+			<p class="standalone-message">Pin the issue</p>
 		</div>
 	{:else if $steps === 'title'}
 		<div in:receive={{ key: 'title' }} out:send={{ key: 'title' }}>

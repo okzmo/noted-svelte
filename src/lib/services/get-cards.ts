@@ -8,6 +8,11 @@ interface GetCardsProps {
 export interface Card {
 	title: string;
 	author: string;
+	pinCoords: {
+		x: number;
+		y: number;
+		scroll: number;
+	};
 	status: {
 		name: string;
 		color: string;

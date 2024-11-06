@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createMutation, getQueryClientContext } from '@tanstack/svelte-query';
-	import { steps, title, name, show, config, creationError } from '../../stores.js';
+	import { steps, title, name, pinning, config, creationError, pin } from '../../stores.js';
 	import { CreateACard } from '../../services/create-card.js';
 
 	let { inputMessage = $bindable() }: { inputMessage: HTMLTextAreaElement | undefined } = $props();
@@ -9,28 +9,32 @@
 	const createCard = createMutation({
 		mutationKey: ['create-card'],
 		mutationFn: async () => {
+			const pinCoords = {
+				x: $pin.x,
+				y: $pin.y,
+				scroll: $pin.scroll
+			};
 			steps.set('creating');
 
 			const res = await CreateACard({
 				config: $config,
 				card_title: $title,
 				card_description: inputMessage!.value,
-				name: $name
+				name: $name,
+				pinCoords: pinCoords
 			});
 			return res;
 		},
-		onError: (error) => {
-			console.log(error);
+		onError: () => {
 			creationError.set(true);
 			setTimeout(() => {
 				creationError.set(false);
-				steps.set('zone');
+				steps.set('pin');
 			}, 1800);
 		},
 		onSuccess: () => {
-			console.log('success');
-			show.set(false);
-			steps.set('zone');
+			steps.set('pin');
+			pinning.set(true);
 			client.invalidateQueries({ queryKey: ['notion-cards'] });
 		}
 	});
