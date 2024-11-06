@@ -230,6 +230,6 @@
 	}
 
 	.inbox-button:hover .inbox-button-icon {
-		color: rgba(255, 255, 255, 1);
+		color: rgba(255, 255, 255, 0.5);
 	}
 </style>

@@ -2,6 +2,7 @@
 	import { createMutation, getQueryClientContext } from '@tanstack/svelte-query';
 	import { steps, selection, title, name, show, config, creationError } from '../../stores.js';
 	import { CreateACard } from '../../services/create-card.js';
+	import { captureScreenshot } from '$lib/utils/capture-screenshot.js';
 
 	let { inputMessage = $bindable() }: { inputMessage: HTMLTextAreaElement | undefined } = $props();
 
@@ -50,7 +51,8 @@
 
 		if (e.key === 'Enter' && !e.shiftKey) {
 			e.preventDefault();
-			$createCard.mutate();
+			// $createCard.mutate();
+			captureScreenshot();
 		}
 	}
 
