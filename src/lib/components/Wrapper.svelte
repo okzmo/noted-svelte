@@ -81,23 +81,27 @@
 	data-ignore-screenshot
 >
 	{#if $steps === 'name' && $name === ''}
-		<div in:receive={{ key: 'name' }} out:send={{ key: 'name' }}>
+		<div class="wrapper-content" in:receive={{ key: 'name' }} out:send={{ key: 'name' }}>
 			<InputName />
 		</div>
 	{:else if $steps === 'pin'}
-		<div in:receive={{ key: 'pin' }} out:send={{ key: 'pin' }}>
+		<div class="wrapper-content" in:receive={{ key: 'pin' }} out:send={{ key: 'pin' }}>
 			<p class="standalone-message">Pin the issue</p>
 		</div>
 	{:else if $steps === 'title'}
-		<div in:receive={{ key: 'title' }} out:send={{ key: 'title' }}>
+		<div class="wrapper-content" in:receive={{ key: 'title' }} out:send={{ key: 'title' }}>
 			<InputTitle bind:inputTitle />
 		</div>
 	{:else if $steps === 'description'}
-		<div in:receive={{ key: 'description' }} out:send={{ key: 'description' }}>
+		<div
+			class="wrapper-content"
+			in:receive={{ key: 'description' }}
+			out:send={{ key: 'description' }}
+		>
 			<InputMessage bind:inputMessage />
 		</div>
 	{:else}
-		<div in:receive={{ key: 'creating' }} out:send={{ key: 'creating' }}>
+		<div class="wrapper-content" in:receive={{ key: 'creating' }} out:send={{ key: 'creating' }}>
 			<p class="standalone-message" class:error={$creationError}>
 				{#if $creationError}
 					Creation failed! Try again.
@@ -168,6 +172,8 @@
 		transform: translate(-50%, -50%);
 		color: rgba(255, 255, 255, 0.4);
 		font-size: 14px;
+		user-select: none;
+		pointer-events: none;
 	}
 
 	.standalone-message.error {
@@ -227,6 +233,7 @@
 	.inbox-button-icon {
 		color: rgba(255, 255, 255, 0.3);
 		transition: color 75ms ease-out;
+		pointer-events: none;
 	}
 
 	.inbox-button:hover .inbox-button-icon {

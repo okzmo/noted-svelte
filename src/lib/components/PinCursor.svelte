@@ -8,7 +8,14 @@
 	function handleMouseMove(e: MouseEvent) {
 		if (!cursor) return;
 
-		cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 5}px)`;
+		cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+
+		const target = e.target as HTMLElement;
+		if (target.classList.contains('ntd-pin') || target.classList.contains('inbox-button')) {
+			cursor.style.opacity = '0';
+		} else if ($pinning) {
+			cursor.style.opacity = '1';
+		}
 	}
 
 	onMount(() => {
@@ -32,14 +39,14 @@
 <style>
 	.pin {
 		opacity: 0;
-		position: absolute;
+		position: fixed;
 		top: 0;
 		left: 0;
 		width: 24px;
 		height: 24px;
 		background-color: rgba(0, 0, 0, 1);
-		z-index: 9998;
-		border-radius: 25px 25px 25px 5px;
+		z-index: 9999;
+		border-radius: 5px 25px 25px 25px;
 		pointer-events: none;
 		user-select: none;
 		border: 0.5px solid #000000;

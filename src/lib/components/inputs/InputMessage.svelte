@@ -10,8 +10,9 @@
 		mutationKey: ['create-card'],
 		mutationFn: async () => {
 			const pinCoords = {
-				x: $pin.x,
-				y: $pin.y,
+				clickX: $pin.clickX,
+				clickY: $pin.clickY,
+				pathToTarget: $pin.pathToTarget,
 				scroll: $pin.scroll
 			};
 			steps.set('creating');
@@ -29,12 +30,15 @@
 			creationError.set(true);
 			setTimeout(() => {
 				creationError.set(false);
+				pinning.set(true);
+				pin.set({ clickX: 0, clickY: 0, scroll: 0, pathToTarget: '', pinned: false });
 				steps.set('pin');
 			}, 1800);
 		},
 		onSuccess: () => {
 			steps.set('pin');
 			pinning.set(true);
+			pin.set({ clickX: 0, clickY: 0, scroll: 0, pathToTarget: '', pinned: false });
 			client.invalidateQueries({ queryKey: ['notion-cards'] });
 		}
 	});

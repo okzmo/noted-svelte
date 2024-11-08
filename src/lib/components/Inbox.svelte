@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 	import type { Card } from '../services/get-cards.js';
+	import { COLORS } from '../stores.js';
 
 	let { cards, loading }: { cards: Card[] | undefined; loading: boolean } = $props();
 </script>
@@ -18,7 +19,7 @@
 						<p class="authorText">{card.author}</p>
 					</div>
 					<div class="status">
-						<span class="statusBg" style="background-color: {card.status.color}"></span>
+						<span class="statusBg" style="background-color: {COLORS[card.status.color]}"></span>
 						<p class="statusText">{card.status.name}</p>
 					</div>
 				</div>

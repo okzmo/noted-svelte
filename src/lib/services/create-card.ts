@@ -4,8 +4,9 @@ interface CreateCardProps {
 		boardId: string;
 	};
 	pinCoords: {
-		x: number;
-		y: number;
+		clickX: number;
+		clickY: number;
+		pathToTarget: string;
 		scroll: number;
 	};
 	card_title: string;
@@ -39,7 +40,6 @@ export const CreateACard = async ({
 	const data = await res.json();
 
 	if (!res.ok) {
-		console.log(data);
 		throw new Error('Failed to create card');
 	}
 

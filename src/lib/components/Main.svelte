@@ -17,12 +17,13 @@
 
 		if (e.key === 'Escape') {
 			if ($pin.pinned) {
-				pin.set({ x: 0, y: 0, scroll: 0, pinned: false });
+				pin.set({ clickX: 0, clickY: 0, scroll: 0, pathToTarget: '', pinned: false });
 				steps.set('pin');
 				pinning.set(true);
 			} else {
 				show.set(false);
 				pinning.set(false);
+				document.body.classList.remove('ntd-pin-mode');
 			}
 			return;
 		}
@@ -32,6 +33,7 @@
 		} else if (firstKey && !$show && e.altKey) {
 			show.set(true);
 			pinning.set(true);
+			document.body.classList.add('ntd-pin-mode');
 			firstKey = null;
 		}
 	}
@@ -65,15 +67,25 @@
 	<Overlay />
 	<Wrapper />
 	{#if $pin.pinned}
-		<Pin id="pin-[{$pin.x} {$pin.y}]" x={$pin.x} y={$pin.y} />
+		<Pin
+			id="pin-[{$pin.clickX}-{$pin.clickY}]"
+			clickX={$pin.clickX}
+			clickY={$pin.clickY}
+			pathToTarget={$pin.pathToTarget}
+			author={$name}
+			status={{ name: 'Not Started', color: 'red' }}
+		/>
 	{/if}
 	{#if $allCards.data}
 		{#each $allCards.data as card}
 			{#if card.pinCoords}
 				<Pin
-					id="pin-[{card.pinCoords.x} {card.pinCoords.y}]"
-					x={card.pinCoords.x}
-					y={card.pinCoords.y}
+					id="pin-[{card.pinCoords.clickX}-{card.pinCoords.clickY}]"
+					clickX={card.pinCoords.clickX}
+					clickY={card.pinCoords.clickY}
+					pathToTarget={card.pinCoords.pathToTarget}
+					author={card.author}
+					status={card.status}
 				/>
 			{/if}
 		{/each}
@@ -81,3 +93,9 @@
 {/if}
 
 <PinCursor />
+
+<style>
+	:global(body.ntd-pin-mode) {
+		cursor: none;
+	}
+</style>

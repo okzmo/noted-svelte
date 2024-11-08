@@ -9,9 +9,10 @@ export interface Card {
 	title: string;
 	author: string;
 	pinCoords: {
-		x: number;
-		y: number;
+		clickX: number;
+		clickY: number;
 		scroll: number;
+		pathToTarget: string;
 	};
 	status: {
 		name: string;
